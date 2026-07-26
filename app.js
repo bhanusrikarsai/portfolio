@@ -124,22 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ── 8. COPY CODE ── */
-  const copyCodeBtn = $('copyCodeBtn');
-  if (copyCodeBtn) {
-    const snippet = `const bhanu = {
-  name:     "Chutturi Bhanu Srikar Sai",
-  degree:   "B.Tech CSE @ VFSTR (Est. 2028)",
-  skills:   ["JavaScript", "HTML/CSS", "Data Analytics", "Git"],
-  location: "Guntur, AP, India",
-  status:   "Open to opportunities 🚀"
-};`;
-    copyCodeBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(snippet)
-        .then(() => toast('✓ Code snippet copied!'))
-        .catch(() => toast('Profile code copied!'));
-    });
-  }
+
 
   /* ── 9. PROJECT FILTER ── */
   const filterBtns  = $$('.filter');
