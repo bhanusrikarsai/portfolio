@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typedEl) {
     const roles = [
       'Full-Stack Web Developer',
-      'B.Tech CSE Student @ VFSTR',
+      'B.Tech CSE Student @ VFSTR (Est. 2028)',
       'Data Analytics Enthusiast',
       'Open Source Contributor'
     ];
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (copyCodeBtn) {
     const snippet = `const bhanu = {
   name:     "Chutturi Bhanu Srikar Sai",
-  degree:   "B.Tech CSE @ VFSTR",
+  degree:   "B.Tech CSE @ VFSTR (Est. 2028)",
   skills:   ["JavaScript", "HTML/CSS", "Data Analytics", "Git"],
   location: "Guntur, AP, India",
   status:   "Open to opportunities 🚀"
