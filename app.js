@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Executive Portfolio Logic & Interactivity
+   Executive Student & Developer Portfolio Logic
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -32,7 +32,7 @@ function showToast(message) {
 function initThemeManager() {
   const themeBtn = document.getElementById('theme-btn');
   const themeMenu = document.getElementById('theme-menu');
-  const themeOpts = document.querySelectorAll('.theme-opt');
+  const themeOpts = document.querySelectorAll('.theme-option');
 
   let activeTheme = localStorage.getItem('gitportfolio_theme') || 'cyber';
   document.documentElement.setAttribute('data-theme', activeTheme);
@@ -58,7 +58,7 @@ function initThemeManager() {
         document.documentElement.setAttribute('data-theme', activeTheme);
         updateActiveThemeOpt(activeTheme);
         themeMenu?.classList.add('dropdown-hidden');
-        showToast(`Theme changed to ${opt.textContent.trim()}`);
+        showToast(`Theme updated to ${opt.textContent.trim()}`);
       }
     });
   });
@@ -74,7 +74,7 @@ function initThemeManager() {
   }
 }
 
-/* Project Filter System */
+/* Project Filter Tabs */
 function initProjectFilters() {
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectCards = document.querySelectorAll('.project-card');
@@ -100,33 +100,33 @@ function initProjectFilters() {
   });
 }
 
-/* Project Modal Manager */
+/* Project Details Modal */
 function initModalManager() {
   const modal = document.getElementById('project-modal');
   const modalClose = document.getElementById('modal-close');
   const modalTitle = document.getElementById('modal-title');
   const modalBody = document.getElementById('modal-body');
-  const detailBtns = document.querySelectorAll('.view-details-btn');
+  const detailBtns = document.querySelectorAll('.details-modal-btn');
 
-  const projectDetails = {
+  const projectData = {
     crimerate: {
       title: 'crimerate-prediction-analysis',
       domain: 'Data Analytics & Machine Learning',
-      description: 'An analytical and predictive software project designed to process historical crime statistics, model regional risk indicators, and forecast future crime density using statistical algorithms.',
+      description: 'Data analytics & predictive machine learning application designed to process historical crime statistics, evaluate regional risk factors, and forecast crime trends.',
       features: [
-        'JavaScript ES6+ Data Analytics Pipelines',
         'Predictive Crime Rate Trend & Risk Evaluation',
-        'Interactive Data Analytics & Statistical Score Visualizations'
+        'JavaScript Data Analytics & Pipeline Processing',
+        'Interactive Chart & Statistical Metrics'
       ],
       github: 'https://github.com/bhanusrikarsai/crimerate-prediction-analysis'
     },
     jdbuilder: {
       title: 'JD-Builder',
-      domain: 'Web App & Developer Tooling',
-      description: 'An interactive Web Application for synthesizing, formatting, and generating professional Job Descriptions and standardized career documents with clean responsive glassmorphic UI.',
+      domain: 'Developer Tooling & Web App',
+      description: 'Interactive Web Application crafted for synthesizing, formatting, and generating professional Job Descriptions, Resumes, and standardized career documents.',
       features: [
-        'HTML5 & Modern CSS3 Glassmorphism Studio',
-        'Real-time Content Formatting & Resume Document Export',
+        'HTML5 & CSS3 Glassmorphism UI Workspace',
+        'Real-time Resume Formatting & Document Synthesis',
         'Responsive Mobile & Desktop Optimization'
       ],
       github: 'https://github.com/bhanusrikarsai/JD-Builder'
@@ -135,13 +135,13 @@ function initModalManager() {
 
   detailBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      const projKey = btn.getAttribute('data-project');
-      const data = projectDetails[projKey];
-      
+      const key = btn.getAttribute('data-project');
+      const data = projectData[key];
+
       if (data && modal && modalTitle && modalBody) {
         modalTitle.textContent = data.title;
         modalBody.innerHTML = `
-          <div class="modal-detail-wrap">
+          <div class="modal-content-wrap">
             <span class="domain-tag">${data.domain}</span>
             <p style="font-size:1.05rem; margin:1rem 0; color:var(--text-secondary);">${data.description}</p>
             
@@ -152,7 +152,7 @@ function initModalManager() {
 
             <div style="display:flex; gap:1rem; margin-top:1.5rem;">
               <a href="${data.github}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                <i class="fa-brands fa-github"></i> View GitHub Repository
+                <i class="fa-brands fa-github"></i> View Repository Code
               </a>
             </div>
           </div>
@@ -170,14 +170,14 @@ function initModalManager() {
   }
 }
 
-/* Contact & Copy Email Manager */
+/* Contact Actions */
 function initContactActions() {
-  const copyEmailBtn = document.getElementById('copy-email-btn');
-  const contactForm = document.getElementById('contact-form');
+  const copyBtn = document.getElementById('copy-email-btn');
+  const form = document.getElementById('contact-form');
   const resumeBtn = document.getElementById('resume-btn');
 
-  if (copyEmailBtn) {
-    copyEmailBtn.addEventListener('click', () => {
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
       const email = 'vu.241fa04267@gmail.com';
       navigator.clipboard.writeText(email).then(() => {
         showToast('Email address copied to clipboard!');
@@ -187,13 +187,13 @@ function initContactActions() {
     });
   }
 
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+  if (form) {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const nameInput = document.getElementById('form-name');
+      const nameInput = document.getElementById('name');
       const name = nameInput ? nameInput.value : 'Friend';
       showToast(`Thank you ${name}! Message sent successfully.`);
-      contactForm.reset();
+      form.reset();
     });
   }
 
@@ -204,44 +204,39 @@ function initContactActions() {
   }
 }
 
-/* Smooth Scrolling */
+/* Smooth Navigation */
 function initSmoothScroll() {
-  const navItems = document.querySelectorAll('.nav-item');
-  navItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-      const href = item.getAttribute('href');
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
       if (href && href.startsWith('#')) {
-        const targetEl = document.querySelector(href);
-        if (targetEl) {
+        const target = document.querySelector(href);
+        if (target) {
           e.preventDefault();
-          navItems.forEach(i => i.classList.remove('active'));
-          item.classList.add('active');
-          targetEl.scrollIntoView({ behavior: 'smooth' });
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          target.scrollIntoView({ behavior: 'smooth' });
         }
       }
     });
   });
 }
 
-/* Safe GitHub Profile API Fetch with Graceful Offline Fallback */
+/* GitHub Profile Fetch with Fallback */
 async function fetchGitHubProfileData() {
   const username = 'bhanusrikarsai';
   try {
-    const response = await fetch(`https://api.github.com/users/${username}`);
-    if (!response.ok) return;
+    const res = await fetch(`https://api.github.com/users/${username}`);
+    if (!res.ok) return;
 
-    const data = await response.json();
-    
-    const avatarEl = document.getElementById('github-avatar');
-    const nameEl = document.getElementById('github-name');
-    const bioEl = document.getElementById('github-bio');
-    const reposEl = document.getElementById('stat-repos');
+    const data = await res.json();
+    const avatarEl = document.getElementById('user-avatar');
+    const nameEl = document.getElementById('user-name');
 
     if (avatarEl && data.avatar_url) avatarEl.src = data.avatar_url;
     if (nameEl && data.name) nameEl.textContent = data.name;
-    if (bioEl && data.bio) bioEl.textContent = data.bio;
-    if (reposEl && data.public_repos !== undefined) reposEl.textContent = data.public_repos;
-  } catch (error) {
-    // Graceful offline fallback -- do nothing, default static content remains active cleanly!
+  } catch (err) {
+    // Silent fallback
   }
 }
