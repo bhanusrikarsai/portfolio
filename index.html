@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhanu Srikar Sai | Software Developer Portfolio</title>
+  <meta name="description" content="Personal Portfolio of Bhanu Srikar Sai (@bhanusrikarsai) - Full-Stack & Machine Learning Software Developer." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Marked.js for README rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <!-- Background Ambient Glow -->
+  <div class="ambient-glow bg-glow-1"></div>
+  <div class="ambient-glow bg-glow-2"></div>
+  <div class="ambient-glow bg-glow-3"></div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-content">
+      <div class="brand">
+        <span class="brand-avatar-mini"><i class="fa-solid fa-code"></i></span>
+        <span class="brand-name">Bhanu <span class="highlight">Srikar Sai</span></span>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="nav-menu">
+        <a href="#about" class="nav-link"><i class="fa-solid fa-user"></i> About</a>
+        <a href="#projects" class="nav-link"><i class="fa-solid fa-laptop-code"></i> Projects</a>
+        <a href="#skills" class="nav-link"><i class="fa-solid fa-layer-group"></i> Skills</a>
+        <a href="#activity" class="nav-link"><i class="fa-solid fa-chart-line"></i> Activity</a>
+        <a href="#contact" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a>
+      </nav>
+
+      <!-- Quick Actions & Theme Switcher -->
+      <div class="nav-actions">
+        <div class="theme-selector-wrapper">
+          <button id="theme-btn" class="btn btn-glass icon-btn" title="Change Theme">
+            <i class="fa-solid fa-palette"></i>
+          </button>
+          <div id="theme-menu" class="theme-dropdown hidden">
+            <button data-theme-val="dark" class="theme-option active"><i class="fa-solid fa-moon"></i> Dark Glass</button>
+            <button data-theme-val="cyberpunk" class="theme-option"><i class="fa-solid fa-bolt"></i> Cyber Neon</button>
+            <button data-theme-val="oled" class="theme-option"><i class="fa-solid fa-circle"></i> Midnight OLED</button>
+            <button data-theme-val="light" class="theme-option"><i class="fa-solid fa-sun"></i> Minimal Light</button>
+          </div>
+        </div>
+
+        <button id="print-btn" class="btn btn-primary" title="Export Resume / Save PDF">
+          <i class="fa-solid fa-file-pdf"></i>
+          <span class="btn-text">Resume PDF</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+
+    <!-- Notification Banner -->
+    <div id="notification-banner" class="notification hidden">
+      <i class="fa-solid fa-circle-info notif-icon"></i>
+      <span id="notif-message"></span>
+      <button class="notif-close" id="notif-close">&times;</button>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div id="loading-state" class="loading-wrapper hidden">
+      <div class="skeleton-banner"></div>
+      <div class="skeleton-profile-grid">
+        <div class="skeleton-avatar"></div>
+        <div class="skeleton-info">
+          <div class="skeleton-line long"></div>
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line medium"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero / Profile Section -->
+    <section id="about" class="profile-hero glass-card">
+      <div class="profile-header-bg"></div>
+      <div class="profile-body">
+        <div class="avatar-container">
+          <img id="user-avatar" src="https://avatars.githubusercontent.com/u/277517838?v=4" alt="Bhanu Srikar Sai Avatar" class="avatar-img" />
+          <span id="hireable-badge" class="badge badge-success"><i class="fa-solid fa-circle"></i> Available for Hire</span>
+        </div>
+
+        <div class="profile-main-info">
+          <div class="profile-title-row">
+            <div>
+              <h1 id="user-name" class="user-display-name">Bhanu Srikar Sai</h1>
+              <div class="user-handle-wrap">
+                <span class="user-role">Full-Stack Software Developer</span>
+                <span class="dot-separator">•</span>
+                <a id="user-github-link" href="https://github.com/bhanusrikarsai" target="_blank" rel="noopener noreferrer" class="user-handle">
+                  @<span id="user-login">bhanusrikarsai</span>
+                </a>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a href="#contact" class="btn btn-primary">
+                <i class="fa-solid fa-paper-plane"></i> Get In Touch
+              </a>
+              <a id="github-external-link" href="https://github.com/bhanusrikarsai" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                <i class="fa-brands fa-github"></i> GitHub Profile
+              </a>
+            </div>
+          </div>
+
+          <p id="user-bio" class="user-bio-text">
+            Passionate Software Developer specializing in modern Web Applications, Machine Learning Analytics, and interactive developer tools. Experienced in JavaScript, HTML5, CSS3, Data Prediction models, and Full-Stack development.
+          </p>
+
+          <div class="profile-meta-grid">
+            <div class="meta-item">
+              <i class="fa-solid fa-laptop-code"></i>
+              <span>Full-Stack & Web Engineering</span>
+            </div>
+            <div class="meta-item">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>India</span>
+            </div>
+            <div class="meta-item">
+              <i class="fa-solid fa-envelope"></i>
+              <a href="mailto:bhanusrikarsai@gmail.com">bhanusrikarsai@gmail.com</a>
+            </div>
+            <div class="meta-item">
+              <i class="fa-solid fa-check-double"></i>
+              <span>Open to Remote & Full-time Roles</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Stats Row -->
+      <div class="profile-stats-bar">
+        <div class="stat-box">
+          <span class="stat-value" id="stat-repos">2</span>
+          <span class="stat-label">Public Repositories</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value" id="stat-contributions">38+</span>
+          <span class="stat-label">Yearly Contributions</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value">JavaScript / HTML</span>
+          <span class="stat-label">Primary Stack</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value">Active</span>
+          <span class="stat-label">Development Status</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Showcase Section -->
+    <section id="projects" class="repos-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-folder-open"></i> Featured Projects</h2>
+          <p class="section-desc">Key web applications, data tools, and open-source software built by Bhanu Srikar Sai</p>
+        </div>
+        <span id="repo-count-badge" class="count-badge">2 Projects</span>
+      </div>
+
+      <!-- Filter Controls Toolbar -->
+      <div class="filter-toolbar glass-card">
+        <div class="filter-search-wrap">
+          <i class="fa-solid fa-magnifying-glass filter-search-icon"></i>
+          <input type="text" id="repo-search-input" placeholder="Search projects by keyword, tech stack, or topic..." />
+        </div>
+
+        <div class="filter-dropdowns">
+          <div class="select-wrapper">
+            <label for="language-filter"><i class="fa-solid fa-code"></i> Tech:</label>
+            <select id="language-filter">
+              <option value="all">All Technologies</option>
+            </select>
+          </div>
+
+          <div class="select-wrapper">
+            <label for="sort-filter"><i class="fa-solid fa-arrow-down-wide-short"></i> Sort:</label>
+            <select id="sort-filter">
+              <option value="updated">Recently Updated</option>
+              <option value="name">Project Name (A-Z)</option>
+              <option value="stars">Most Stars</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Repositories Grid Container -->
+      <div id="repos-grid" class="repos-grid"></div>
+
+      <!-- Empty State -->
+      <div id="no-repos-found" class="empty-state glass-card hidden">
+        <i class="fa-solid fa-folder-open empty-icon"></i>
+        <h3>No matching projects found</h3>
+        <p>Try clearing your search keyword or tech filter.</p>
+      </div>
+    </section>
+
+    <!-- Skills & Tech Stack Section -->
+    <section id="skills" class="dashboard-grid">
+      <!-- Language Analytics Card -->
+      <div class="glass-card analytics-card">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fa-solid fa-layer-group"></i> Core Technology Breakdown</h2>
+          <span class="card-subtitle">Languages and frameworks across active projects</span>
+        </div>
+        <div id="language-bars" class="lang-bars-container">
+          <!-- Stacked progress bar -->
+          <div id="lang-stacked-bar" class="stacked-bar"></div>
+          <!-- Language Legend List -->
+          <div id="lang-legend" class="lang-legend-grid"></div>
+        </div>
+      </div>
+
+      <!-- Skill Badges & Highlights Card -->
+      <div class="glass-card highlights-card">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fa-solid fa-screwdriver-wrench"></i> Technical Proficiency</h2>
+          <span class="card-subtitle">Key domains & engineering focus</span>
+        </div>
+        <div class="skills-chips-grid">
+          <div class="skill-chip"><i class="fa-brands fa-js"></i> JavaScript (ES6+)</div>
+          <div class="skill-chip"><i class="fa-brands fa-html5"></i> HTML5 & Semantic Web</div>
+          <div class="skill-chip"><i class="fa-brands fa-css3-alt"></i> CSS3 & Modern Layouts</div>
+          <div class="skill-chip"><i class="fa-solid fa-chart-pie"></i> Data Analytics & Prediction</div>
+          <div class="skill-chip"><i class="fa-solid fa-diagram-project"></i> Machine Learning Models</div>
+          <div class="skill-chip"><i class="fa-solid fa-code"></i> Full-Stack Web Development</div>
+          <div class="skill-chip"><i class="fa-brands fa-git-alt"></i> Git & Version Control</div>
+          <div class="skill-chip"><i class="fa-solid fa-laptop-file"></i> UI/UX Web Design</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contribution Heatmap & Activity Section -->
+    <section id="activity" class="activity-wrapper">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-calendar-days"></i> Contribution Heatmap & Activity</h2>
+          <p class="section-desc">Commit distribution and recent development activity</p>
+        </div>
+      </div>
+
+      <div class="activity-grid">
+        <!-- Heatmap Image Card -->
+        <div class="glass-card heatmap-card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fa-solid fa-fire"></i> 365-Day Commit Matrix</h3>
+          </div>
+          <div class="heatmap-container">
+            <img id="contribution-chart-img" src="https://ghchart.rshah.org/bhanusrikarsai" alt="Bhanu Srikar Sai Contribution Chart" class="heatmap-img" />
+          </div>
+        </div>
+
+        <!-- Activity Timeline -->
+        <div class="glass-card activity-card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Recent Activity Logs</h3>
+          </div>
+          <div id="activity-timeline" class="activity-timeline">
+            <div class="timeline-loading">Loading recent activity...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Connect Section -->
+    <section id="contact" class="contact-section glass-card">
+      <div class="contact-content">
+        <div class="contact-header">
+          <h2 class="section-title"><i class="fa-solid fa-paper-plane"></i> Get In Touch</h2>
+          <p class="section-desc">Interested in working together or checking out my work? Feel free to reach out!</p>
+        </div>
+
+        <div class="contact-grid">
+          <a href="mailto:bhanusrikarsai@gmail.com" class="contact-card">
+            <div class="contact-icon icon-email"><i class="fa-solid fa-envelope"></i></div>
+            <div class="contact-details">
+              <h4>Email Me</h4>
+              <p>bhanusrikarsai@gmail.com</p>
+            </div>
+          </a>
+
+          <a href="https://github.com/bhanusrikarsai" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <div class="contact-icon icon-github"><i class="fa-brands fa-github"></i></div>
+            <div class="contact-details">
+              <h4>GitHub Profile</h4>
+              <p>github.com/bhanusrikarsai</p>
+            </div>
+          </a>
+
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <div class="contact-icon icon-linkedin"><i class="fa-brands fa-linkedin"></i></div>
+            <div class="contact-details">
+              <h4>LinkedIn</h4>
+              <p>Connect on LinkedIn</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <p>&copy; 2026 Bhanu Srikar Sai &bull; Full-Stack Software Developer Portfolio</p>
+      <div class="footer-links">
+        <a href="https://github.com/bhanusrikarsai" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+        <a href="#about"><i class="fa-solid fa-arrow-up"></i> Top</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- README Viewer Modal Window -->
+  <div id="readme-modal" class="modal-overlay hidden">
+    <div class="modal-card glass-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <i class="fa-solid fa-book-bookmark modal-icon"></i>
+          <h3 id="modal-repo-name">Project README</h3>
+        </div>
+        <button id="modal-close-btn" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-readme-content">
+        <div class="loading-readme"><i class="fa-solid fa-spinner fa-spin"></i> Fetching README documentation...</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
