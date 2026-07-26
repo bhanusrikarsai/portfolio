@@ -91,29 +91,7 @@
           </a>
         </div>
 
-        <!-- Terminal -->
-        <div class="terminal">
-          <div class="terminal__bar">
-            <div class="terminal__dots">
-              <span class="tdot red"></span>
-              <span class="tdot yellow"></span>
-              <span class="tdot green"></span>
-            </div>
-            <span class="terminal__filename"><i class="fa-solid fa-code"></i> profile.js</span>
-            <button id="copyCodeBtn" class="terminal__copy" title="Copy code">
-              <i class="fa-regular fa-copy"></i>
-            </button>
-          </div>
-          <div class="terminal__body">
-<pre><code><span class="kw">const</span> bhanu = {
-  name:     <span class="str">"Chutturi Bhanu Srikar Sai"</span>,
-  degree:   <span class="str">"B.Tech CSE @ VFSTR (Est. 2028)"</span>,
-  skills:   [<span class="str">"JavaScript"</span>, <span class="str">"HTML/CSS"</span>, <span class="str">"Data Analytics"</span>, <span class="str">"Git"</span>],
-  location: <span class="str">"Guntur, AP, India"</span>,
-  status:   <span class="str">"🚀 Open to opportunities"</span>
-};</code></pre>
-          </div>
-        </div>
+
       </div>
 
       <!-- Right: Profile Card -->
@@ -410,7 +388,76 @@
       </div>
 
       <div class="certs-grid">
-        <!-- Cert 1: Google Data Analytics -->
+        <!-- Cert 1: JS Essentials 2 -->
+        <article class="cert-card glass">
+          <div class="cert-card__head">
+            <div class="cert-card__icon cert-icon--cyan">
+              <i class="fa-brands fa-js" style="color:#f7df1e"></i>
+            </div>
+            <div class="cert-card__meta">
+              <span class="cert-badge cert-badge--cyan">Cisco Certified</span>
+              <span class="cert-date">13 May 2026</span>
+            </div>
+          </div>
+          <h3 class="cert-card__title">JavaScript Essentials 2</h3>
+          <p class="cert-card__issuer"><i class="fa-solid fa-certificate"></i> Cisco Networking Academy &amp; JS Institute (VFSTR)</p>
+          <p class="cert-card__desc">Advanced JavaScript concepts, asynchronous programming, OOP principles, and DOM event engineering. Instructor: G Balu Narasimharao.</p>
+          <p class="cert-card__id" style="font-family:var(--font-mono); font-size:.78rem; color:var(--muted); margin-bottom:.8rem;"><i class="fa-solid fa-id-card"></i> ID: 9c2de79c-9460-4086-977f-fb9f2fe9a8aa</p>
+          <div class="cert-card__tags">
+            <span class="tag">JavaScript ES6+</span>
+            <span class="tag">Cisco Academy</span>
+            <span class="tag">VFSTR</span>
+            <span class="tag">Advanced JS</span>
+          </div>
+        </article>
+
+        <!-- Cert 2: JS Essentials 1 -->
+        <article class="cert-card glass">
+          <div class="cert-card__head">
+            <div class="cert-card__icon cert-icon--cyan">
+              <i class="fa-brands fa-js" style="color:#f7df1e"></i>
+            </div>
+            <div class="cert-card__meta">
+              <span class="cert-badge cert-badge--cyan">Cisco Certified</span>
+              <span class="cert-date">22 Apr 2026</span>
+            </div>
+          </div>
+          <h3 class="cert-card__title">JavaScript Essentials 1</h3>
+          <p class="cert-card__issuer"><i class="fa-solid fa-certificate"></i> Cisco Networking Academy &amp; JS Institute (VFSTR)</p>
+          <p class="cert-card__desc">Foundational JavaScript syntax, control flow, functions, data types, and core web engineering principles. Instructor: G Balu Narasimharao.</p>
+          <p class="cert-card__id" style="font-family:var(--font-mono); font-size:.78rem; color:var(--muted); margin-bottom:.8rem;"><i class="fa-solid fa-id-card"></i> ID: 12e03a9b-665c-4179-bb2d-c8598d5bc948</p>
+          <div class="cert-card__tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">Cisco Academy</span>
+            <span class="tag">VFSTR</span>
+            <span class="tag">Web Engineering</span>
+          </div>
+        </article>
+
+        <!-- Cert 3: NPTEL Principles of Management -->
+        <article class="cert-card glass">
+          <div class="cert-card__head">
+            <div class="cert-card__icon cert-icon--purple">
+              <i class="fa-solid fa-award" style="color:#eab308"></i>
+            </div>
+            <div class="cert-card__meta">
+              <span class="cert-badge cert-badge--purple">NPTEL Elite</span>
+              <span class="cert-date">Jan-Apr 2026</span>
+            </div>
+          </div>
+          <h3 class="cert-card__title">Principles of Management (Elite)</h3>
+          <p class="cert-card__issuer"><i class="fa-solid fa-building-columns"></i> IIT Roorkee / NPTEL (MoE, Govt. of India)</p>
+          <p class="cert-card__desc">12-week national certification covering strategic decision making, organizational behavior, project leadership, and operational management. Score: 61% (Elite).</p>
+          <p class="cert-card__id" style="font-family:var(--font-mono); font-size:.78rem; color:var(--muted); margin-bottom:.8rem;"><i class="fa-solid fa-id-card"></i> Roll No: NPTEL26MG72S650800806</p>
+          <div class="cert-card__tags">
+            <span class="tag">NPTEL Elite</span>
+            <span class="tag">IIT Roorkee</span>
+            <span class="tag">Management</span>
+            <span class="tag">MoE Govt of India</span>
+          </div>
+        </article>
+
+        <!-- Cert 4: Google Data Analytics -->
         <article class="cert-card glass">
           <div class="cert-card__head">
             <div class="cert-card__icon cert-icon--blue">
@@ -428,73 +475,6 @@
             <span class="tag">Data Analytics</span>
             <span class="tag">SQL</span>
             <span class="tag">Predictive ML</span>
-            <span class="tag">Visualization</span>
-          </div>
-        </article>
-
-        <!-- Cert 2: Meta Front-End Developer -->
-        <article class="cert-card glass">
-          <div class="cert-card__head">
-            <div class="cert-card__icon cert-icon--cyan">
-              <i class="fa-brands fa-meta"></i>
-            </div>
-            <div class="cert-card__meta">
-              <span class="cert-badge cert-badge--cyan">Verified</span>
-              <span class="cert-date">2025</span>
-            </div>
-          </div>
-          <h3 class="cert-card__title">Meta Front-End Developer Professional Certificate</h3>
-          <p class="cert-card__issuer"><i class="fa-solid fa-certificate"></i> Meta / Coursera</p>
-          <p class="cert-card__desc">Advanced frontend web engineering, HTML5, CSS3 glassmorphism design, JavaScript ES6+, UI/UX accessibility, and Git version control.</p>
-          <div class="cert-card__tags">
-            <span class="tag">HTML5/CSS3</span>
-            <span class="tag">JavaScript ES6+</span>
-            <span class="tag">UI/UX</span>
-            <span class="tag">Git</span>
-          </div>
-        </article>
-
-        <!-- Cert 3: AWS Cloud Foundations -->
-        <article class="cert-card glass">
-          <div class="cert-card__head">
-            <div class="cert-card__icon cert-icon--orange">
-              <i class="fa-brands fa-aws"></i>
-            </div>
-            <div class="cert-card__meta">
-              <span class="cert-badge cert-badge--orange">Verified</span>
-              <span class="cert-date">2025</span>
-            </div>
-          </div>
-          <h3 class="cert-card__title">AWS Academy Graduate — Cloud Foundations</h3>
-          <p class="cert-card__issuer"><i class="fa-solid fa-certificate"></i> Amazon Web Services (AWS)</p>
-          <p class="cert-card__desc">Core cloud architecture concepts, EC2 compute instances, S3 bucket storage, IAM security management, and serverless application hosting.</p>
-          <div class="cert-card__tags">
-            <span class="tag">AWS Cloud</span>
-            <span class="tag">EC2 &amp; S3</span>
-            <span class="tag">DevOps</span>
-            <span class="tag">Security</span>
-          </div>
-        </article>
-
-        <!-- Cert 4: NPTEL DSA -->
-        <article class="cert-card glass">
-          <div class="cert-card__head">
-            <div class="cert-card__icon cert-icon--purple">
-              <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-            <div class="cert-card__meta">
-              <span class="cert-badge cert-badge--purple">Elite</span>
-              <span class="cert-date">2025</span>
-            </div>
-          </div>
-          <h3 class="cert-card__title">Data Structures &amp; Algorithms in Java</h3>
-          <p class="cert-card__issuer"><i class="fa-solid fa-certificate"></i> NPTEL / IIT Kharagpur</p>
-          <p class="cert-card__desc">Algorithmic complexity (Big-O), trees, graphs, dynamic programming, sorting algorithms, and object-oriented Java software design.</p>
-          <div class="cert-card__tags">
-            <span class="tag">DSA</span>
-            <span class="tag">Java</span>
-            <span class="tag">Algorithms</span>
-            <span class="tag">Problem Solving</span>
           </div>
         </article>
 
