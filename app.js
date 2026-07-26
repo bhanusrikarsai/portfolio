@@ -1,236 +1,186 @@
-/* =====================================================
-   BHANU SRIKAR SAI — PORTFOLIO APPLICATION LOGIC
-   Interactive Features, Modal Engine & Typing Animations
-   ===================================================== */
+/* Portfolio App Logic — Clean, Error-Free */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ── Helper Selector ── */
-  const el = id => document.getElementById(id);
-  const qsa = sel => Array.from(document.querySelectorAll(sel));
+  const $ = id => document.getElementById(id);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
 
-  /* ─────────────────────────────
-     1. DYNAMIC TYPING ANIMATION
-  ───────────────────────────── */
-  const typedRole = el('typedRole');
-  if (typedRole) {
+  /* ── 1. TYPING EFFECT ── */
+  const typedEl = $('typedRole');
+  if (typedEl) {
     const roles = [
-      "Full-Stack Web Developer",
-      "B.Tech CSE Undergrad @ VFSTR",
-      "Predictive Analytics & ML Enthusiast",
-      "Open Source Contributor"
+      'Full-Stack Web Developer',
+      'B.Tech CSE Student @ VFSTR',
+      'Data Analytics Enthusiast',
+      'Open Source Contributor'
     ];
-    let roleIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
+    let ri = 0, ci = 0, deleting = false;
 
-    function typeEffect() {
-      const currentRole = roles[roleIndex];
-      if (isDeleting) {
-        typedRole.textContent = currentRole.substring(0, charIndex - 1);
-        charIndex--;
-      } else {
-        typedRole.textContent = currentRole.substring(0, charIndex + 1);
-        charIndex++;
-      }
+    function type() {
+      const word = roles[ri];
+      typedEl.textContent = deleting
+        ? word.slice(0, ci - 1)
+        : word.slice(0, ci + 1);
 
-      let typeSpeed = isDeleting ? 40 : 80;
+      if (deleting) ci--;
+      else ci++;
 
-      if (!isDeleting && charIndex === currentRole.length) {
-        typeSpeed = 2200; // Pause at end
-        isDeleting = true;
-      } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        roleIndex = (roleIndex + 1) % roles.length;
-        typeSpeed = 400;
-      }
+      let delay = deleting ? 38 : 78;
+      if (!deleting && ci === word.length) { delay = 2000; deleting = true; }
+      else if (deleting && ci === 0)       { deleting = false; ri = (ri + 1) % roles.length; delay = 400; }
 
-      setTimeout(typeEffect, typeSpeed);
+      setTimeout(type, delay);
     }
-
-    typeEffect();
+    type();
   }
 
-  /* ─────────────────────────────
-     2. NAVBAR SCROLL & BURGER
-  ───────────────────────────── */
-  const navbar = el('navbar');
-  const navLinks = el('navLinks');
-  const burger = el('navBurger');
+  /* ── 2. NAVBAR scroll + burger ── */
+  const navbar = $('navbar');
+  const navLinks = $('navLinks');
+  const burger  = $('navBurger');
 
-  if (navbar) {
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive: true });
-  }
+  window.addEventListener('scroll', () => {
+    if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
 
   if (burger && navLinks) {
-    burger.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
-    navLinks.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => navLinks.classList.remove('open'));
-    });
+    burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => navLinks.classList.remove('open'))
+    );
   }
 
-  /* ─────────────────────────────
-     3. SCROLLSPY ACTIVE NAV LINKS
-  ───────────────────────────── */
-  const sections = qsa('section[id]');
-  const navAnchors = qsa('.nav__link');
+  /* ── 3. ACTIVE NAV LINK (scrollspy) ── */
+  const sections   = $$('section[id]');
+  const navAnchors = $$('.nav__link');
 
-  if (sections.length && navAnchors.length) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navAnchors.forEach(a => {
-            a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
-          });
+  if (sections.length) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navAnchors.forEach(a =>
+            a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)
+          );
         }
       });
-    }, { rootMargin: '-30% 0px -60% 0px' });
-
-    sections.forEach(s => observer.observe(s));
+    }, { rootMargin: '-35% 0px -55% 0px' });
+    sections.forEach(s => obs.observe(s));
   }
 
-  /* ─────────────────────────────
-     4. ANIMATED SKILL BARS ON SCROLL
-  ───────────────────────────── */
-  const skillFills = qsa('.skill-bar__fill');
-  if (skillFills.length) {
-    const skillObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const progress = entry.target.getAttribute('data-progress');
-          if (progress) {
-            entry.target.style.width = progress;
-          }
+  /* ── 4. SKILL BAR ANIMATION ── */
+  const fills = $$('.meter__fill');
+  if (fills.length) {
+    const skillObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const w = e.target.getAttribute('data-w');
+          if (w) e.target.style.width = w;
+          skillObs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.3 });
-
-    skillFills.forEach(bar => skillObserver.observe(bar));
+    }, { threshold: 0.25 });
+    fills.forEach(f => skillObs.observe(f));
   }
 
-  /* ─────────────────────────────
-     5. LIGHT / DARK THEME TOGGLE
-  ───────────────────────────── */
-  const themeBtn = el('themeToggle');
-  const themeIcon = el('themeIcon');
+  /* ── 5. THEME TOGGLE ── */
+  const themeBtn  = $('themeToggle');
+  const themeIcon = $('themeIcon');
+  const saved     = localStorage.getItem('bss-theme') || 'dark';
+  if (saved === 'light') setLight();
 
-  const savedTheme = localStorage.getItem('bss-theme') || 'dark';
-  if (savedTheme === 'light') applyLight();
-
-  function applyLight() {
+  function setLight() {
     document.documentElement.setAttribute('data-theme', 'light');
-    if (themeIcon) { themeIcon.className = 'fa-solid fa-sun'; }
+    if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
   }
-
-  function applyDark() {
+  function setDark() {
     document.documentElement.removeAttribute('data-theme');
-    if (themeIcon) { themeIcon.className = 'fa-solid fa-moon'; }
+    if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
   }
 
   if (themeBtn) {
     themeBtn.addEventListener('click', () => {
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      if (isLight) {
-        applyDark();
-        localStorage.setItem('bss-theme', 'dark');
-      } else {
-        applyLight();
-        localStorage.setItem('bss-theme', 'light');
-      }
+      if (isLight) { setDark();  localStorage.setItem('bss-theme', 'dark'); }
+      else         { setLight(); localStorage.setItem('bss-theme', 'light'); }
     });
   }
 
-  /* ─────────────────────────────
-     6. TOAST NOTIFICATIONS
-  ───────────────────────────── */
-  const toast = el('toast');
-
-  function showToast(msg, duration = 2800) {
-    if (!toast) return;
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), duration);
+  /* ── 6. TOAST ── */
+  const toastEl = $('toast');
+  function toast(msg, dur = 2800) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    setTimeout(() => toastEl.classList.remove('show'), dur);
   }
 
-  /* ─────────────────────────────
-     7. COPY EMAIL & CODE SNIPPET
-  ───────────────────────────── */
-  const copyEmailBtn = el('copyEmailBtn');
+  /* ── 7. COPY EMAIL ── */
+  const copyEmailBtn = $('copyEmailBtn');
   if (copyEmailBtn) {
     copyEmailBtn.addEventListener('click', () => {
       navigator.clipboard.writeText('vu.241fa04267@gmail.com')
-        .then(() => showToast('✓ Email copied to clipboard!'))
-        .catch(() => showToast('vu.241fa04267@gmail.com'));
+        .then(() => toast('✓ Email copied to clipboard!'))
+        .catch(() => toast('vu.241fa04267@gmail.com'));
     });
   }
 
-  const copyCodeBtn = el('copyCodeBtn');
+  /* ── 8. COPY CODE ── */
+  const copyCodeBtn = $('copyCodeBtn');
   if (copyCodeBtn) {
-    copyCodeBtn.addEventListener('click', () => {
-      const codeSnippet = `const student = {
-  name: "Chutturi Bhanu Srikar Sai",
-  education: "B.Tech CSE @ VFSTR",
-  coreSkills: ["JavaScript", "HTML5/CSS3", "Data Analytics", "Git"],
-  focus: "Full-Stack Web Development & Predictive ML",
+    const snippet = `const bhanu = {
+  name:     "Chutturi Bhanu Srikar Sai",
+  degree:   "B.Tech CSE @ VFSTR",
+  skills:   ["JavaScript", "HTML/CSS", "Data Analytics", "Git"],
   location: "Guntur, AP, India",
-  status: "🚀 Ready to solve real-world problems"
+  status:   "Open to opportunities 🚀"
 };`;
-      navigator.clipboard.writeText(codeSnippet)
-        .then(() => showToast('✓ JS profile code copied!'))
-        .catch(() => showToast('Code copied!'));
+    copyCodeBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(snippet)
+        .then(() => toast('✓ Code snippet copied!'))
+        .catch(() => toast('Profile code copied!'));
     });
   }
 
-  /* ─────────────────────────────
-     8. PROJECT FILTER TABS
-  ───────────────────────────── */
-  const filterBtns = qsa('.filter-btn');
-  const projectCards = qsa('.project-card');
+  /* ── 9. PROJECT FILTER ── */
+  const filterBtns  = $$('.filter');
+  const projCards   = $$('.project-card');
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
-      const filter = btn.dataset.filter;
-      projectCards.forEach(card => {
-        const cat = card.dataset.category || '';
-        card.classList.toggle('hidden', filter !== 'all' && cat !== filter);
+      const f = btn.dataset.filter;
+      projCards.forEach(c => {
+        c.classList.toggle('hidden', f !== 'all' && c.dataset.cat !== f);
       });
     });
   });
 
-  /* ─────────────────────────────
-     9. PROJECT DETAILS MODAL
-  ───────────────────────────── */
-  const modal = el('modal');
-  const modalTitle = el('modalTitle');
-  const modalBody = el('modalBody');
-  const modalClose = el('modalClose');
-  const backdrop = el('modalBackdrop');
+  /* ── 10. PROJECT MODAL ── */
+  const modal       = $('modal');
+  const modalTitle  = $('modalTitle');
+  const modalBody   = $('modalBody');
+  const modalClose  = $('modalClose');
+  const backdrop    = $('modalBackdrop');
 
-  const projectData = {
+  const projects = {
     crimerate: {
       title: 'Crime Rate Prediction Analysis',
       body: `
         <h4>Overview</h4>
-        <p>A data analytics and machine learning application engineered to analyze historical crime records, identify key risk indicators, and forecast future crime trends across region boundaries.</p>
+        <p>A predictive ML application that processes historical crime data, models regional risk factors, and forecasts crime trends.</p>
         <h4>Key Features</h4>
         <ul>
-          <li>Historical crime dataset parsing &amp; pre-processing</li>
-          <li>Feature extraction and risk metric modeling</li>
-          <li>Predictive trend forecasting with machine learning models</li>
-          <li>Clean analytical summaries &amp; visual metric charts</li>
+          <li>Historical crime dataset parsing &amp; processing</li>
+          <li>Regional risk factor modelling</li>
+          <li>Trend forecasting via predictive ML</li>
+          <li>Data visualisation dashboards</li>
         </ul>
-        <h4>Tech Stack &amp; Skills</h4>
-        <p>JavaScript, Predictive ML, Data Analytics, Git/GitHub</p>
-        <div style="margin-top:1.2rem;">
-          <a href="https://github.com/bhanusrikarsai/crimerate-prediction-analysis" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--sm">
-            <i class="fa-brands fa-github"></i> View GitHub Repository
+        <h4>Stack</h4>
+        <p>JavaScript, Predictive ML, Data Analytics, Git</p>
+        <div style="margin-top:1.2rem">
+          <a href="https://github.com/bhanusrikarsai/crimerate-prediction-analysis" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+            <i class="fa-brands fa-github"></i> View on GitHub
           </a>
         </div>
       `
@@ -239,40 +189,40 @@ document.addEventListener('DOMContentLoaded', () => {
       title: 'JD-Builder',
       body: `
         <h4>Overview</h4>
-        <p>An interactive, responsive web application for quickly composing, editing, and formatting professional Job Descriptions, candidate criteria, and career document templates.</p>
+        <p>An interactive web app for composing, formatting, and exporting professional Job Descriptions and career documents.</p>
         <h4>Key Features</h4>
         <ul>
-          <li>Dynamic job description generation workflow</li>
-          <li>Customizable role, skill, and qualification blocks</li>
-          <li>Clean UI with instant copy and export options</li>
-          <li>100% responsive cross-platform layout</li>
+          <li>Dynamic JD generation workflow</li>
+          <li>Customisable role, skill &amp; qualification blocks</li>
+          <li>One-click copy and export</li>
+          <li>Fully responsive cross-platform UI</li>
         </ul>
-        <h4>Tech Stack &amp; Skills</h4>
-        <p>HTML5, Modern CSS3, JavaScript (ES6+), Web Tooling</p>
-        <div style="margin-top:1.2rem;">
-          <a href="https://github.com/bhanusrikarsai/JD-Builder" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--sm">
-            <i class="fa-brands fa-github"></i> View GitHub Repository
+        <h4>Stack</h4>
+        <p>HTML5, CSS3, JavaScript ES6+</p>
+        <div style="margin-top:1.2rem">
+          <a href="https://github.com/bhanusrikarsai/JD-Builder" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+            <i class="fa-brands fa-github"></i> View on GitHub
           </a>
         </div>
       `
     },
     portfolio: {
-      title: 'Interactive Student Portfolio',
+      title: 'Developer Portfolio',
       body: `
         <h4>Overview</h4>
-        <p>A personal portfolio showcasing my engineering journey, technical projects, and skills with high visual polish, glassmorphism aesthetics, and fast load times.</p>
+        <p>A high-performance personal portfolio with glassmorphism dark theme, animated skill bars, project filter tabs, and Vite build pipeline.</p>
         <h4>Key Features</h4>
         <ul>
-          <li>Vite build setup for optimized static output</li>
-          <li>Glassmorphism dark theme with light mode switcher</li>
-          <li>Animated skill bars, live code widgets, and project filters</li>
-          <li>Direct GitHub Pages deployment pipeline</li>
+          <li>Vite-powered build &amp; GitHub Pages deploy</li>
+          <li>Dark / Light theme toggle with local storage</li>
+          <li>Animated progress skill bars via Intersection Observer</li>
+          <li>Typing effect, project modals, copy-to-clipboard</li>
         </ul>
-        <h4>Tech Stack &amp; Skills</h4>
-        <p>Vite, HTML5, CSS3 Glassmorphism, JavaScript ES6+</p>
-        <div style="margin-top:1.2rem;">
-          <a href="https://github.com/bhanusrikarsai/portfolio" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--sm">
-            <i class="fa-brands fa-github"></i> View GitHub Repository
+        <h4>Stack</h4>
+        <p>Vite, HTML5, Vanilla CSS Glassmorphism, JavaScript ES6+</p>
+        <div style="margin-top:1.2rem">
+          <a href="https://github.com/bhanusrikarsai/portfolio" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+            <i class="fa-brands fa-github"></i> View on GitHub
           </a>
         </div>
       `
@@ -280,10 +230,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.openModal = function(key) {
-    const data = projectData[key];
-    if (!data || !modal) return;
-    if (modalTitle) modalTitle.textContent = data.title;
-    if (modalBody) modalBody.innerHTML = data.body;
+    const d = projects[key];
+    if (!d || !modal) return;
+    if (modalTitle) modalTitle.textContent = d.title;
+    if (modalBody)  modalBody.innerHTML    = d.body;
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -297,24 +247,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (modalClose) modalClose.addEventListener('click', closeModal);
-  if (backdrop) backdrop.addEventListener('click', closeModal);
-
+  if (backdrop)   backdrop.addEventListener('click',   closeModal);
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal && modal.classList.contains('open')) {
-      closeModal();
-    }
+    if (e.key === 'Escape' && modal?.classList.contains('open')) closeModal();
   });
 
-  /* ─────────────────────────────
-     10. CONTACT FORM SUBMISSION
-  ───────────────────────────── */
-  const form = el('contactForm');
+  /* ── 11. CONTACT FORM ── */
+  const form = $('contactForm');
   if (form) {
     form.addEventListener('submit', e => {
       e.preventDefault();
-      const name = el('fname') ? el('fname').value.trim() : '';
+      const name = ($('fname')?.value || '').trim();
       if (!name) return;
-      showToast(`✓ Thank you ${name}! Your message was submitted.`);
+      toast(`✓ Thanks ${name}! Message received.`);
       form.reset();
     });
   }
