@@ -1,242 +1,261 @@
-/* ==========================================================================
-   Executive Student & Developer Portfolio Logic
-   ========================================================================== */
+/* =====================================================
+   Portfolio App Logic — Zero-Error Edition
+   ===================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initThemeManager();
-  initProjectFilters();
-  initModalManager();
-  initContactActions();
-  initSmoothScroll();
-  fetchGitHubProfileData();
-});
 
-/* Toast Notification Utility */
-function showToast(message) {
-  const container = document.getElementById('toast-container');
-  if (!container) return;
+  /* ── Helpers ── */
+  const el  = id => document.getElementById(id);
+  const qsa = sel => Array.from(document.querySelectorAll(sel));
 
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${message}`;
-  container.appendChild(toast);
+  /* ─────────────────────────────
+     1. NAVBAR — scroll + burger
+  ───────────────────────────── */
+  const navbar   = el('navbar');
+  const navLinks = el('navLinks');
+  const burger   = el('navBurger');
 
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(20px)';
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
-}
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  }
 
-/* Theme Manager */
-function initThemeManager() {
-  const themeBtn = document.getElementById('theme-btn');
-  const themeMenu = document.getElementById('theme-menu');
-  const themeOpts = document.querySelectorAll('.theme-option');
-
-  let activeTheme = localStorage.getItem('gitportfolio_theme') || 'cyber';
-  document.documentElement.setAttribute('data-theme', activeTheme);
-  updateActiveThemeOpt(activeTheme);
-
-  if (themeBtn && themeMenu) {
-    themeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      themeMenu.classList.toggle('dropdown-hidden');
+  if (burger && navLinks) {
+    burger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
     });
-
-    document.addEventListener('click', () => {
-      themeMenu.classList.add('dropdown-hidden');
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => navLinks.classList.remove('open'));
     });
   }
 
-  themeOpts.forEach(opt => {
-    opt.addEventListener('click', () => {
-      const themeVal = opt.getAttribute('data-theme');
-      if (themeVal) {
-        activeTheme = themeVal;
-        localStorage.setItem('gitportfolio_theme', activeTheme);
-        document.documentElement.setAttribute('data-theme', activeTheme);
-        updateActiveThemeOpt(activeTheme);
-        themeMenu?.classList.add('dropdown-hidden');
-        showToast(`Theme updated to ${opt.textContent.trim()}`);
-      }
-    });
-  });
+  /* ─────────────────────────────
+     2. ACTIVE NAV LINK on scroll
+  ───────────────────────────── */
+  const sections = qsa('section[id]');
+  const navAnchors = qsa('.nav__link');
 
-  function updateActiveThemeOpt(theme) {
-    themeOpts.forEach(opt => {
-      if (opt.getAttribute('data-theme') === theme) {
-        opt.classList.add('active');
-      } else {
-        opt.classList.remove('active');
-      }
-    });
-  }
-}
-
-/* Project Filter Tabs */
-function initProjectFilters() {
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const projectCards = document.querySelectorAll('.project-card');
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const filter = btn.getAttribute('data-filter');
-      
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      projectCards.forEach(card => {
-        const category = card.getAttribute('data-category');
-        if (filter === 'all' || category === filter) {
-          card.style.display = 'flex';
-          card.style.opacity = '1';
-        } else {
-          card.style.display = 'none';
-          card.style.opacity = '0';
+  if (sections.length && navAnchors.length) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navAnchors.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+          });
         }
       });
-    });
-  });
-}
+    }, { rootMargin: '-40% 0px -55% 0px' });
 
-/* Project Details Modal */
-function initModalManager() {
-  const modal = document.getElementById('project-modal');
-  const modalClose = document.getElementById('modal-close');
-  const modalTitle = document.getElementById('modal-title');
-  const modalBody = document.getElementById('modal-body');
-  const detailBtns = document.querySelectorAll('.details-modal-btn');
+    sections.forEach(s => observer.observe(s));
+  }
 
-  const projectData = {
-    crimerate: {
-      title: 'crimerate-prediction-analysis',
-      domain: 'Data Analytics & Machine Learning',
-      description: 'Data analytics & predictive machine learning application designed to process historical crime statistics, evaluate regional risk factors, and forecast crime trends.',
-      features: [
-        'Predictive Crime Rate Trend & Risk Evaluation',
-        'JavaScript Data Analytics & Pipeline Processing',
-        'Interactive Chart & Statistical Metrics'
-      ],
-      github: 'https://github.com/bhanusrikarsai/crimerate-prediction-analysis'
-    },
-    jdbuilder: {
-      title: 'JD-Builder',
-      domain: 'Developer Tooling & Web App',
-      description: 'Interactive Web Application crafted for synthesizing, formatting, and generating professional Job Descriptions, Resumes, and standardized career documents.',
-      features: [
-        'HTML5 & CSS3 Glassmorphism UI Workspace',
-        'Real-time Resume Formatting & Document Synthesis',
-        'Responsive Mobile & Desktop Optimization'
-      ],
-      github: 'https://github.com/bhanusrikarsai/JD-Builder'
-    }
-  };
+  /* ─────────────────────────────
+     3. THEME TOGGLE
+  ───────────────────────────── */
+  const themeBtn  = el('themeToggle');
+  const themeIcon = el('themeIcon');
 
-  detailBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const key = btn.getAttribute('data-project');
-      const data = projectData[key];
+  const savedTheme = localStorage.getItem('bss-theme') || 'dark';
+  if (savedTheme === 'light') applyLight();
 
-      if (data && modal && modalTitle && modalBody) {
-        modalTitle.textContent = data.title;
-        modalBody.innerHTML = `
-          <div class="modal-content-wrap">
-            <span class="domain-tag">${data.domain}</span>
-            <p style="font-size:1.05rem; margin:1rem 0; color:var(--text-secondary);">${data.description}</p>
-            
-            <h4 style="font-family:var(--font-heading); margin-bottom:0.75rem; color:var(--text-primary);">Key Architectural Features</h4>
-            <ul style="padding-left:1.5rem; margin-bottom:1.5rem; color:var(--text-secondary);">
-              ${data.features.map(f => `<li style="margin-bottom:0.4rem;">${f}</li>`).join('')}
-            </ul>
+  function applyLight() {
+    document.documentElement.setAttribute('data-theme', 'light');
+    if (themeIcon) { themeIcon.className = 'fa-solid fa-sun'; }
+  }
+  function applyDark() {
+    document.documentElement.removeAttribute('data-theme');
+    if (themeIcon) { themeIcon.className = 'fa-solid fa-moon'; }
+  }
 
-            <div style="display:flex; gap:1rem; margin-top:1.5rem;">
-              <a href="${data.github}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                <i class="fa-brands fa-github"></i> View Repository Code
-              </a>
-            </div>
-          </div>
-        `;
-        modal.classList.remove('modal-hidden');
-      }
-    });
-  });
-
-  if (modalClose && modal) {
-    modalClose.addEventListener('click', () => modal.classList.add('modal-hidden'));
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) modal.classList.add('modal-hidden');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) { applyDark(); localStorage.setItem('bss-theme', 'dark'); }
+      else         { applyLight(); localStorage.setItem('bss-theme', 'light'); }
     });
   }
-}
 
-/* Contact Actions */
-function initContactActions() {
-  const copyBtn = document.getElementById('copy-email-btn');
-  const form = document.getElementById('contact-form');
-  const resumeBtn = document.getElementById('resume-btn');
+  /* ─────────────────────────────
+     4. TOAST NOTIFICATION
+  ───────────────────────────── */
+  const toast = el('toast');
 
+  function showToast(msg, duration = 2800) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), duration);
+  }
+
+  /* ─────────────────────────────
+     5. COPY EMAIL
+  ───────────────────────────── */
+  const copyBtn = el('copyEmailBtn');
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
-      const email = 'vu.241fa04267@gmail.com';
-      navigator.clipboard.writeText(email).then(() => {
-        showToast('Email address copied to clipboard!');
-      }).catch(() => {
-        showToast('Email: vu.241fa04267@gmail.com');
-      });
+      navigator.clipboard.writeText('vu.241fa04267@gmail.com')
+        .then(() => showToast('✓ Email copied to clipboard!'))
+        .catch(() => showToast('vu.241fa04267@gmail.com'));
     });
   }
 
+  /* ─────────────────────────────
+     6. CONTACT FORM
+  ───────────────────────────── */
+  const form = el('contactForm');
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', e => {
       e.preventDefault();
-      const nameInput = document.getElementById('name');
-      const name = nameInput ? nameInput.value : 'Friend';
-      showToast(`Thank you ${name}! Message sent successfully.`);
+      const name = el('fname') ? el('fname').value.trim() : '';
+      if (!name) return;
+      showToast(`✓ Thanks ${name}! Message received.`);
       form.reset();
     });
   }
 
-  if (resumeBtn) {
-    resumeBtn.addEventListener('click', () => {
-      window.print();
-    });
-  }
-}
+  /* ─────────────────────────────
+     7. PROJECT FILTER TABS
+  ───────────────────────────── */
+  const filterBtns   = qsa('.filter');
+  const projectCards = qsa('.project-card');
 
-/* Smooth Navigation */
-function initSmoothScroll() {
-  const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
-      if (href && href.startsWith('#')) {
-        const target = document.querySelector(href);
-        if (target) {
-          e.preventDefault();
-          navLinks.forEach(l => l.classList.remove('active'));
-          link.classList.add('active');
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+      projectCards.forEach(card => {
+        const cat = card.dataset.cat || '';
+        card.classList.toggle('hidden', filter !== 'all' && cat !== filter);
+      });
     });
   });
-}
 
-/* GitHub Profile Fetch with Fallback */
-async function fetchGitHubProfileData() {
-  const username = 'bhanusrikarsai';
-  try {
-    const res = await fetch(`https://api.github.com/users/${username}`);
-    if (!res.ok) return;
+  /* ─────────────────────────────
+     8. PROJECT MODAL
+  ───────────────────────────── */
+  const modal      = el('modal');
+  const modalTitle = el('modalTitle');
+  const modalBody  = el('modalBody');
+  const modalClose = el('modalClose');
+  const backdrop   = el('modalBackdrop');
 
-    const data = await res.json();
-    const avatarEl = document.getElementById('user-avatar');
-    const nameEl = document.getElementById('user-name');
+  const projectData = {
+    crimerate: {
+      title: 'Crime Rate Prediction Analysis',
+      body: `
+        <h4>Overview</h4>
+        <p>A data analytics and predictive machine learning application that processes historical crime statistics, models regional risk factors, and forecasts crime trends.</p>
+        <h4>Key Features</h4>
+        <ul>
+          <li>Historical crime data ingestion and normalisation</li>
+          <li>Regional risk factor modelling</li>
+          <li>Trend forecasting via predictive ML algorithms</li>
+          <li>Data visualisation dashboards</li>
+        </ul>
+        <h4>Tech Stack</h4>
+        <p>JavaScript, Data Analytics, Predictive ML, Git</p>
+        <a href="https://github.com/bhanusrikarsai/crimerate-prediction-analysis" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.4rem;color:var(--accent);font-weight:600;margin-top:.5rem;">
+          <i class="fa-brands fa-github"></i> View on GitHub
+        </a>
+      `
+    },
+    jdbuilder: {
+      title: 'JD-Builder',
+      body: `
+        <h4>Overview</h4>
+        <p>An interactive web application crafted for synthesising, formatting, and generating professional Job Descriptions, resumes, and career documents with ease.</p>
+        <h4>Key Features</h4>
+        <ul>
+          <li>Dynamic job description generation</li>
+          <li>Customisable templates and formatting</li>
+          <li>One-click document export</li>
+          <li>Fully responsive, mobile-friendly UI</li>
+        </ul>
+        <h4>Tech Stack</h4>
+        <p>HTML5, Modern CSS3, JavaScript (ES6+)</p>
+        <a href="https://github.com/bhanusrikarsai/JD-Builder" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.4rem;color:var(--accent);font-weight:600;margin-top:.5rem;">
+          <i class="fa-brands fa-github"></i> View on GitHub
+        </a>
+      `
+    }
+  };
 
-    if (avatarEl && data.avatar_url) avatarEl.src = data.avatar_url;
-    if (nameEl && data.name) nameEl.textContent = data.name;
-  } catch (err) {
-    // Silent fallback
+  window.openModal = function(key) {
+    const data = projectData[key];
+    if (!data || !modal) return;
+    if (modalTitle) modalTitle.textContent = data.title;
+    if (modalBody)  modalBody.innerHTML    = data.body;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
   }
-}
+
+  if (modalClose) modalClose.addEventListener('click', closeModal);
+  if (backdrop)   backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  /* ─────────────────────────────
+     9. SKILL METER ANIMATION
+  ───────────────────────────── */
+  const fills = qsa('.meter__fill');
+  if (fills.length) {
+    const meterObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const fill = entry.target;
+          fill.style.width = fill.dataset.width || '0';
+          meterObs.unobserve(fill);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    fills.forEach(f => meterObs.observe(f));
+  }
+
+  /* ─────────────────────────────
+     10. SCROLL REVEAL
+  ───────────────────────────── */
+  qsa('.glass, .about-card, .timeline__item, .project-card, .skill-card, .contact-info, .contact-form, .hero__content, .hero__card').forEach(el => {
+    el.classList.add('reveal');
+  });
+
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  qsa('.reveal').forEach(el => revealObs.observe(el));
+
+  /* ─────────────────────────────
+     11. AVATAR FALLBACK
+  ───────────────────────────── */
+  const avatarImg = el('avatarImg');
+  const avatarFallback = el('avatarFallback');
+  if (avatarImg && avatarFallback) {
+    avatarImg.addEventListener('error', () => {
+      avatarImg.style.display = 'none';
+      avatarFallback.style.display = 'flex';
+    });
+  }
+
+  /* ─────────────────────────────
+     12. RESUME / PRINT
+  ───────────────────────────── */
+  const resumeBtn = el('resumeBtn');
+  if (resumeBtn) resumeBtn.addEventListener('click', () => window.print());
+
+});
